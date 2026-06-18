@@ -7,64 +7,66 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('quizzes_app', '0001_initial'),
+        ("quizzes_app", "0001_initial"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='question',
-            old_name='correct_answer',
-            new_name='answer',
+            model_name="question",
+            old_name="correct_answer",
+            new_name="answer",
         ),
         migrations.RenameField(
-            model_name='question',
-            old_name='question',
-            new_name='question_title',
+            model_name="question",
+            old_name="question",
+            new_name="question_title",
         ),
         migrations.RemoveField(
-            model_name='question',
-            name='wrong_answer_1',
+            model_name="question",
+            name="wrong_answer_1",
         ),
         migrations.RemoveField(
-            model_name='question',
-            name='wrong_answer_2',
+            model_name="question",
+            name="wrong_answer_2",
         ),
         migrations.RemoveField(
-            model_name='question',
-            name='wrong_answer_3',
+            model_name="question",
+            name="wrong_answer_3",
         ),
         migrations.AddField(
-            model_name='question',
-            name='created_at',
-            field=models.DateTimeField(auto_now_add=True, default=django.utils.timezone.now),
+            model_name="question",
+            name="created_at",
+            field=models.DateTimeField(
+                auto_now_add=True, default=django.utils.timezone.now
+            ),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='question',
-            name='question_options',
+            model_name="question",
+            name="question_options",
             field=models.JSONField(default=[]),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='question',
-            name='updated_at',
+            model_name="question",
+            name="updated_at",
             field=models.DateTimeField(auto_now=True),
         ),
         migrations.AddField(
-            model_name='quiz',
-            name='description',
-            field=models.TextField(default='description'),
+            model_name="quiz",
+            name="description",
+            field=models.TextField(default="description"),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='quiz',
-            name='title',
-            field=models.CharField(default='title', max_length=255),
+            model_name="quiz",
+            name="title",
+            field=models.CharField(default="title", max_length=255),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='quiz',
-            name='updated_at',
+            model_name="quiz",
+            name="updated_at",
             field=models.DateTimeField(auto_now=True),
         ),
     ]

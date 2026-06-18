@@ -15,35 +15,36 @@ class QuizViewSet(
     mixins.RetrieveModelMixin,
     mixins.UpdateModelMixin,
     mixins.DestroyModelMixin,
-    viewsets.GenericViewSet
+    viewsets.GenericViewSet,
 ):
     permission_classes = [IsAuthenticated]
     queryset = Quiz.objects.all()
 
     def get_serializer_class(self):
-        if self.action in ['list', 'retrieve', 'update', 'partial_update']:
+        if self.action in ["list", "retrieve", "update", "partial_update"]:
             return QuizListSerializer
         return QuizSerializer
 
     def get_queryset(self):
-        if self.action == 'list':
+        if self.action == "list":
             return Quiz.objects.filter(user=self.request.user)
         return Quiz.objects.all()
 
     def get_object(self):
-        quiz = get_object_or_404(Quiz, pk=self.kwargs['pk'])
+        quiz = get_object_or_404(Quiz, pk=self.kwargs["pk"])
         if quiz.user != self.request.user:
             raise PermissionDenied("You do not have permission to access this quiz.")
         return quiz
 
     def create(self, request, *args, **kwargs):
-        url = request.data.get('url')
+        url = request.data.get("url")
         if not url:
-            return Response({'detail': 'URL is required.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"detail": "URL is required."}, status=status.HTTP_400_BAD_REQUEST
+            )
 
         video, created = Video.objects.get_or_create(
-            url=url,
-            defaults={'title': '', 'transcript': ''}
+            url=url, defaults={"title": "", "transcript": ""}
         )
 
         if created:
@@ -54,29 +55,31 @@ class QuizViewSet(
 
         existing_quiz = Quiz.objects.filter(user=request.user, video=video).first()
         if existing_quiz:
-            return Response(QuizSerializer(existing_quiz).data, status=status.HTTP_200_OK)
+            return Response(
+                QuizSerializer(existing_quiz).data, status=status.HTTP_200_OK
+            )
 
         try:
             quiz_data = generate_quiz(video.transcript)
         except ResourceExhausted:
             return Response(
-                {'detail': 'AI service quota exceeded, please try again later.'},
-                status=status.HTTP_503_SERVICE_UNAVAILABLE
+                {"detail": "AI service quota exceeded, please try again later."},
+                status=status.HTTP_503_SERVICE_UNAVAILABLE,
             )
 
         quiz = Quiz.objects.create(
             user=request.user,
             video=video,
-            title=quiz_data['title'],
-            description=quiz_data['description']
+            title=quiz_data["title"],
+            description=quiz_data["description"],
         )
 
-        for q in quiz_data['questions']:
+        for q in quiz_data["questions"]:
             Question.objects.create(
                 quiz=quiz,
-                question_title=q['question_title'],
-                question_options=q['question_options'],
-                answer=q['answer']
+                question_title=q["question_title"],
+                question_options=q["question_options"],
+                answer=q["answer"],
             )
 
         return Response(QuizSerializer(quiz).data, status=status.HTTP_201_CREATED)

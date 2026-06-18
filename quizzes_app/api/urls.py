@@ -3,8 +3,8 @@ from .views import QuizViewSet
 from django.urls import path, include
 
 router = DefaultRouter()
-router.register(r'quizzes', QuizViewSet, basename='quiz')
+router.register(r"quizzes", QuizViewSet, basename="quiz")
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path("", include(router.urls)),
 ]

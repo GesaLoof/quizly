@@ -9,7 +9,7 @@ from google import genai
 
 def get_transcript(url):
     model = whisper.load_model("base")
-    
+
     with tempfile.TemporaryDirectory() as tmpdir:
         ydl_opts = {
             "format": "bestaudio/best",
@@ -20,18 +20,18 @@ def get_transcript(url):
 
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=True)
-            title = info.get('title', 'Unknown Title')
+            title = info.get("title", "Unknown Title")
             audio_file = ydl.prepare_filename(info)
 
         result = model.transcribe(audio_file)
-        transcript = result['text']
+        transcript = result["text"]
 
     return title, transcript
 
 
 def generate_quiz(transcript):
     client = genai.Client(api_key=settings.GEMINI_API_KEY)
-    
+
     prompt = f"""Based on the following transcript, generate a quiz in valid JSON format.
 
     The quiz must follow this exact structure:
@@ -55,10 +55,15 @@ def generate_quiz(transcript):
     - Do not include explanations, comments, or any text outside the JSON.
     Transcript: {transcript}"""
     response = client.models.generate_content(
-        model="gemini-2.5-flash-lite",
-        contents=prompt
+        model="gemini-2.5-flash-lite", contents=prompt
     )
-    
-    text = response.text.strip().removeprefix("```json").removeprefix("```").removesuffix("```").strip()
+
+    text = (
+        response.text.strip()
+        .removeprefix("```json")
+        .removeprefix("```")
+        .removesuffix("```")
+        .strip()
+    )
     data = json.loads(text)
     return data

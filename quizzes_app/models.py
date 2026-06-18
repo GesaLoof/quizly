@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 
+
 class Video(models.Model):
     url = models.URLField(unique=True)
     title = models.CharField(max_length=255)
@@ -12,8 +13,10 @@ class Video(models.Model):
 
 
 class Quiz(models.Model):
-    video = models.ForeignKey(Video, on_delete=models.CASCADE, related_name='quizzes')
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='quizzes')
+    video = models.ForeignKey(Video, on_delete=models.CASCADE, related_name="quizzes")
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="quizzes"
+    )
     title = models.CharField(max_length=255)
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
@@ -24,7 +27,7 @@ class Quiz(models.Model):
 
 
 class Question(models.Model):
-    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name='questions')
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name="questions")
     question_title = models.CharField(max_length=500)
     question_options = models.JSONField()  # stores the list of options
     answer = models.CharField(max_length=255)
