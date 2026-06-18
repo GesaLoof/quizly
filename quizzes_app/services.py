@@ -8,6 +8,9 @@ from google import genai
 
 
 def get_transcript(url):
+    """
+    Downloads audio from a video URL, transcribes it into text, and returns the video title and transcript.
+    """
     model = whisper.load_model("base")
 
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -30,6 +33,9 @@ def get_transcript(url):
 
 
 def generate_quiz(transcript):
+    """
+    Generates a multiple-choice quiz with 10 questions in JSON format based on the provided transcript using Google Gemini.
+    """
     client = genai.Client(api_key=settings.GEMINI_API_KEY)
 
     prompt = f"""Based on the following transcript, generate a quiz in valid JSON format.

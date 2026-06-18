@@ -17,6 +17,10 @@ class QuizViewSet(
     mixins.DestroyModelMixin,
     viewsets.GenericViewSet,
 ):
+    """
+    Provides CRUD operations for quizzes, including listing, creating, retrieving, 
+    updating, and deleting quizzes. Ensures that users can only access their own quizzes.
+    """
     permission_classes = [IsAuthenticated]
     queryset = Quiz.objects.all()
 

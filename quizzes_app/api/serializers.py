@@ -3,6 +3,9 @@ from quizzes_app.models import Quiz, Question, Video
 
 
 class QuestionListSerializer(serializers.ModelSerializer):
+    """
+    Serializer for listing questions with limited fields (excludes timestamps).
+    """
     class Meta:
         model = Question
         fields = [
@@ -14,6 +17,9 @@ class QuestionListSerializer(serializers.ModelSerializer):
 
 
 class QuestionSerializer(serializers.ModelSerializer):
+    """
+    Serializer for detailed question data, including timestamps.
+    """
     class Meta:
         model = Question
         fields = [
@@ -27,6 +33,10 @@ class QuestionSerializer(serializers.ModelSerializer):
 
 
 class QuizListSerializer(serializers.ModelSerializer):
+    """
+    Serializer for listing quizzes with related questions and video URL.
+    Includes validation to restrict unexpected fields.
+    """
     questions = QuestionListSerializer(many=True, read_only=True)
     video_url = serializers.CharField(source="video.url", read_only=True)
 
@@ -61,6 +71,9 @@ class QuizListSerializer(serializers.ModelSerializer):
 
 
 class QuizSerializer(serializers.ModelSerializer):
+    """
+    Serializer for detailed quiz data, including related questions and video URL.
+    """
     questions = QuestionSerializer(many=True, read_only=True)
     video_url = serializers.CharField(source="video.url", read_only=True)
 

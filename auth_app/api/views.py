@@ -9,6 +9,9 @@ from rest_framework_simplejwt.exceptions import TokenError
 
 
 class RegistrationView(APIView):
+    """
+    Handles user registration by validating input data and creating a new user account.
+    """
     permission_classes = [AllowAny]
 
     def post(self, request):
@@ -28,6 +31,9 @@ class RegistrationView(APIView):
 
 
 class CookieTokenObtainPairView(TokenObtainPairView):
+    """
+    Handles user login by generating and setting access and refresh tokens as cookies.
+    """
     serializer_class = CustomTokenObtainPairSerializer
 
     def post(self, request, *args, **kwargs):
@@ -60,6 +66,9 @@ class CookieTokenObtainPairView(TokenObtainPairView):
 
 
 class CookieTokenRefreshView(TokenRefreshView):
+    """
+    Refreshes the access token using the refresh token stored in cookies.
+    """
     def post(self, request, *args, **kwargs):
         refresh_token = request.COOKIES.get("refresh_token")
         if not refresh_token:
@@ -88,6 +97,9 @@ class CookieTokenRefreshView(TokenRefreshView):
 
 
 class LogoutView(APIView):
+    """
+    Handles user logout by blacklisting the refresh token and clearing authentication cookies.
+    """
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
