@@ -19,11 +19,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-nnhy-6ah8e63i*zok^d8q1^192#swtky80jtcrg286)i#3y=ef'
+from decouple import config
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+SECRET_KEY = config("SECRET_KEY")
+DEBUG = config("DEBUG", default=False, cast=bool)
+GEMINI_API_KEY = config("GEMINI_API_KEY")
 
 ALLOWED_HOSTS = []
 
@@ -38,9 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'auth.api',
+    'auth_app',
     "rest_framework_simplejwt",
     'rest_framework_simplejwt.token_blacklist',
+    'quizzes_app',
 ]
 
 MIDDLEWARE = [
@@ -131,6 +132,6 @@ REST_FRAMEWORK = {
 from datetime import timedelta
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),  #adapt for production
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1)
 }
