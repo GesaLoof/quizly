@@ -5,11 +5,11 @@ from django.contrib.auth import get_user_model
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
-    repeated_password = serializers.CharField(write_only=True)
+    confirmed_password = serializers.CharField(write_only=True)
 
     class Meta:
         model = User
-        fields = ["username", "email", "password", "repeated_password"]
+        fields = ["username", "email", "password", "confirmed_password"]
         extra_kwargs = {"password": {"write_only": True}, "email": {"required": True}}
 
     def validate_repeated_password(self, value):
