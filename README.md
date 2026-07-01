@@ -24,7 +24,7 @@ Quizly turns any YouTube video into a 10-question multiple-choice quiz. Paste in
 
 Before installing Python dependencies, make sure the following are available on your system:
 
-- Python 3.11+
+- Python 3.13+
 - [ffmpeg](https://ffmpeg.org/) (required by Whisper for audio processing)
   ```bash
   brew install ffmpeg        # macOS
@@ -42,7 +42,7 @@ Before installing Python dependencies, make sure the following are available on 
 
 2. Create and activate a virtual environment:
    ```bash
-   python -m venv venv
+   python3.13 -m venv venv
    source venv/bin/activate    # macOS/Linux
    venv\Scripts\activate       # Windows
    ```
